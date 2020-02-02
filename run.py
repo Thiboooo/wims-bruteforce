@@ -55,7 +55,7 @@ for s in html.find_all('span'):
     if(s.get("class") != None and "wims_classes_direct_course" in s.get("class")):
         nbmodule+=1
         print(str(nbmodule)+ " - " + s.text.strip()+"\n")
-x = 3 #input('Quel module voulez vous choisir ? ') or 3
+x = input('Quel module voulez vous choisir ? ') or 3
 nbmodule=0
 for s in html.find_all('span'):
     if(s.get("class") != None and "wims_classes_direct_course" in s.get("class")):
@@ -81,7 +81,7 @@ for s in html2.find_all('td'):
 if(nbmodule==0):
     print("Vous êtes banni pendant 10 minutes.")
     sys.exit(0)
-x = 1 #input('Quel feuille voulez vous choisir ? \n') or 2
+x = input('Quel feuille voulez vous choisir ? \n') or 2
 nbmodule=0
 for s in html2.find_all('td'):
     if(s.get("class") != None and "wims_user_sheet_desc" in s.get("class")):
@@ -104,7 +104,7 @@ for s in html3.find_all('li'):
             print(str(cpt) + " - " + s.find("a").text + "")
             d=True
 
-y = 10 #input("Quel exercice voulez vous choisir? (a pour tout)")
+y = input("Quel exercice voulez vous choisir? (a pour tout)")
 if y == "a":
     pass
 else:
