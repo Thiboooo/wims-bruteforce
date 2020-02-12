@@ -205,8 +205,11 @@ else:
                                     print("ya des sol")
                                     htmltmp = BeautifulSoup(requests.get(urltmp,headers=headers).content, features="html.parser")
                                     urltmp2 = "http://iic0e.univ-littoral.fr/wims/wims.cgi?session="+session_id+"&lang=fr&cmd=reply&module=U1%2Farithmetic%2Fmodarith.fr&reply1="
-                                    for sols in sol:
-                                        urltmp2+=urllib.parse.quote(str(sols))
+                                    for e,sols in enumerate(sol):
+                                        if(e!=len(sol)):
+                                            urltmp2+=urllib.parse.quote(str(sols)+",")
+                                        else:
+                                            urltmp2+=urllib.parse.quote(str(sols))
                                     urltmp2+="&reply2="+str(mod)
                                     print(urltmp2)
                                     htmltmp2 = BeautifulSoup(requests.get(urltmp2,headers=headers).content, features="html.parser")
@@ -235,15 +238,21 @@ else:
                                 else:
                                     urltmp = "http://iic0e.univ-littoral.fr/wims/wims.cgi?session="+session_id+"&lang=fr&cmd=reply&module=U1%2Farithmetic%2Fmodarith.fr&choice1=1"
                                     print("pas de sol")
+                                    print(urltmp)
                                     htmltmp = BeautifulSoup(requests.get(urltmp,headers=headers).content, features="html.parser")
+                                    print(htmltmp)
                                     new = ""
                                     for j in range(mod):
                                         for i in range(mod):
                                             if((x*i)%mod == j):
                                                 new = j
-                                                print("new! "+j)
+                                    for s in htmltmp.find_all('input'):
+                                        if(s.get("name") != None and "session" in s.get("name")):
+                                            session_id = s.get("value")
+                                            print("d'acc")
                                     print("nouvelle trouvée ! " + str(new))
-                                    sys.exit(0)
+                                    urltmp = "http://iic0e.univ-littoral.fr/wims/wims.cgi?session="+session_id+"&lang=fr&cmd=reply&module=U1%2Farithmetic%2Fmodarith.fr&reply3="+str(new)
+                                    htmltmp = BeautifulSoup(requests.get(urltmp,headers=headers).content, features="html.parser")
                                     for q in htmltmp.find_all("body"):
                                         if(q.get("class") != None and "user_error" in q.get("class")):
                                             error = True
@@ -265,6 +274,7 @@ else:
                                                 # Si jamais l'ancienne qualité est supérieur a la nouvelle, on stop tout.
                                                 if(qualitya>quality):
                                                     print("Mauvaise réponse envoyée " + str(qualitya) + " nv : "+str(quality))
+                                                    print(urltmp)
                                                     sys.exit(0)
                             else:
                                 print("Exo non trouvé")
